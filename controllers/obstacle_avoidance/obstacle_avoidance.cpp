@@ -1,6 +1,6 @@
 /**
- * @file    main.cpp
- * @brief   A simple example for avoid obstacles.
+ * @file    obstacle_avoidance.cpp
+ * @brief   Program for avoid obstacles.
  *
  * @author  Eduardo Sanz Ruzafa <100282586@alumnos.uc3m.es>
  * @date    2014-10

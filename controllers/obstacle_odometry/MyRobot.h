@@ -1,42 +1,42 @@
 /**
  * @file    MyRobot.h
- * @brief   Program for avoid obstacles.
- *
+ * @brief   Controller that void the obstacle with odometry.
+ * @return
  * @author  Eduardo Sanz Ruzafa <100282586@alumnos.uc3m.es>
- * @date    2014-10
+ * @date    2014-11-11
  */
 
+//Libraries
 #include <iostream>
 #include <cmath>
 #include <webots/DifferentialWheels.hpp>
 
-using namespace std;
+// All the webots classes are defined in the "webots" namespace
 using namespace webots;
+using namespace std;
 
-#define MAX_SPEED       60
-#define DESIRED_ANGLE   45.0
-#define NUM_DISTANCE_SENSOR 16
-#define DISTANCE_LIMIT      650
 
+//SETTING MAX SPEED
+#define MAX_SPEED       80
+
+// Declaration class of my controller
 class MyRobot : public DifferentialWheels {
 private:
-    int _time_step;
 
-    Compass * _my_compass;
+    //Encoders
+    double _left_encoder, _right_encoder;
+
+    //Speeds
     double _left_speed, _right_speed;
-    DistanceSensor * _distance_sensor[NUM_DISTANCE_SENSOR];
 
-    enum Mode {
-        STOP,
-        FORWARD,
-        TURN_LEFT,
-        TURN_RIGHT,
-        RIGHT_WALL_FOLLOWER,
-        LEFT_WALL_FOLLOWER,
-        GO_STRAIGHT
-    };
+    //Distances and angles
+    double _distance, desired_distance, desired_angle;
 
-    Mode _mode;
+    //Compass
+    Compass* _my_compass;
+
+    //Other useful variables
+    int _time_step, _status;
 
 public:
     /**
@@ -55,7 +55,7 @@ public:
     void run();
 
     /**
-          * @brief An program for converting bearing vector from compass to angle (in degrees).
+          * @brief Function for converting bearing vector from compass to angle (in degrees).
           */
     double convert_bearing_to_degrees(const double* in_vector);
 };

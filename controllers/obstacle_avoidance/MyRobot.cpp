@@ -1,6 +1,6 @@
 /**
- * @file    main.cpp
- * @brief   A simple example for avoid obstacles.
+ * @file    MyRobot.cpp
+ * @brief   Program for avoid obstacles.
  *
  * @author  Eduardo Sanz Ruzafa <100282586@alumnos.uc3m.es>
  * @date    2014-10
@@ -63,7 +63,6 @@ MyRobot::~MyRobot()
 
 void MyRobot::run()
 {
-//    double compass_angle, compass_angle2;
     double dist[NUM_DISTANCE_SENSOR];
     double compass_angle;
 
@@ -85,7 +84,7 @@ void MyRobot::run()
 
         if ((dist[12] > DISTANCE_LIMIT) && (dist[14] > DISTANCE_LIMIT) && (dist[1] > DISTANCE_LIMIT) && (dist[3] > DISTANCE_LIMIT)) {
             _mode = GO_STRAIGHT;
-//            go_45();
+            //            go_45();
             cout << "Tiraaa" << endl;
         }
 
@@ -201,52 +200,52 @@ void MyRobot::run()
 
         // Send actuators commands according to the mode
         switch (_mode){
-            case STOP:
-                _left_speed = 0;
-                _right_speed = 0;
-                break;
-            case FORWARD:
+        case STOP:
+            _left_speed = 0;
+            _right_speed = 0;
+            break;
+        case FORWARD:
+            _left_speed = MAX_SPEED;
+            _right_speed = MAX_SPEED;
+            break;
+        case TURN_LEFT:
+            _left_speed = MAX_SPEED / 1.2;
+            _right_speed = MAX_SPEED;
+            break;
+        case TURN_RIGHT:
+            _left_speed = MAX_SPEED;
+            _right_speed = MAX_SPEED / 1.2;
+            break;
+        case RIGHT_WALL_FOLLOWER:
+            _left_speed = -MAX_SPEED / 3.0;
+            _right_speed = -MAX_SPEED / 20.0;
+            break;
+        case LEFT_WALL_FOLLOWER:
+            _left_speed = -MAX_SPEED / 20.0;
+            _right_speed = -MAX_SPEED / 3.0;
+            break;
+        case GO_STRAIGHT:
+            // Simple bang-bang control
+            if (compass_angle < (DESIRED_ANGLE - 1)) {
+                // Turn right
                 _left_speed = MAX_SPEED;
-                _right_speed = MAX_SPEED;
-                break;
-            case TURN_LEFT:
-                _left_speed = MAX_SPEED / 1.2;
-                _right_speed = MAX_SPEED;
-                break;
-            case TURN_RIGHT:
-                _left_speed = MAX_SPEED;
-                _right_speed = MAX_SPEED / 1.2;
-                break;
-            case RIGHT_WALL_FOLLOWER:
-                _left_speed = -MAX_SPEED / 3.0;
-                _right_speed = -MAX_SPEED / 20.0;
-                break;
-            case LEFT_WALL_FOLLOWER:
-                _left_speed = -MAX_SPEED / 20.0;
-                _right_speed = -MAX_SPEED / 3.0;
-                break;
-            case GO_STRAIGHT:
-                // Simple bang-bang control
-                if (compass_angle < (DESIRED_ANGLE - 1)) {
-                    // Turn right
-                    _left_speed = MAX_SPEED;
-                    _right_speed = MAX_SPEED - 35;
+                _right_speed = MAX_SPEED - 35;
+            }
+            else {
+                if (compass_angle > (DESIRED_ANGLE + 1)) {
+                    // Turn left
+                    _left_speed = MAX_SPEED - 35;
+                    _right_speed = MAX_SPEED;
                 }
                 else {
-                    if (compass_angle > (DESIRED_ANGLE + 1)) {
-                        // Turn left
-                        _left_speed = MAX_SPEED - 35;
-                        _right_speed = MAX_SPEED;
-                    }
-                    else {
-                        // Move straight forward
-                        _left_speed = MAX_SPEED;
-                        _right_speed = MAX_SPEED;
-                    }
+                    // Move straight forward
+                    _left_speed = MAX_SPEED;
+                    _right_speed = MAX_SPEED;
                 }
-                break;
-            default:
-                break;
+            }
+            break;
+        default:
+            break;
         }
 
         // Set the motor speeds
