@@ -1,18 +1,14 @@
 /**
  * @file    obstacle_avoidance.cpp
- * @brief   Program for avoid obstacles.
- *
+ * @brief   Controller that void obstacles.
+ * @return
  * @author  Eduardo Sanz Ruzafa <100282586@alumnos.uc3m.es>
- * @date    2014-10
+ * @date    2014-11-11
  */
 
 #include "MyRobot.h"
 
-/*
- * Main program.
- * The arguments of the main function can be specified by the
- * "controllerArgs" field of the Robot node
- */
+//Main program
 int main(int argc, char **argv)
 {
     MyRobot* my_robot = new MyRobot();
